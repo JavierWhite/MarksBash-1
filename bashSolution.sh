@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ******************************UNCLASSIFIED******************************
+# ************************************************************UNCLASSIFIED************************************************************
 #  Company: Northrop Grumman 
 #  Date   : July 16, 2021
 #  By: Tim Kan M61636 for SWDC OPIR
@@ -8,7 +8,7 @@
 #  Instruction: ./test.sh <Inputfile> <outputfile> 
 #               the user will need to specify input file and what they want it to output to.
 #               user can choose to output at a .txt or a .cpp etc...
-# ******************************UNCLASSIFIED******************************
+# ************************************************************UNCLASSIFIED************************************************************
 
 i='/*----------------------------------------------------------------------*/
 /*---------------------------- UNCLASSIFIED ----------------------------*/
