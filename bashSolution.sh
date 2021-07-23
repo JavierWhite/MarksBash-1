@@ -68,13 +68,15 @@ yy=$(grep -i "bool" $1 | grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~
 echo "  $yy(false)" >> $2
 gg=$(grep -i "char" $1 | head -1 |grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~ ~\n~g' | sed 's~;~~g')
 echo "  $gg('\0')" >> $2
-unsig=$(grep -i "unsigned" $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~,~g')
+unsig=$(grep -i "unsigned" $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g')
 rest=$(grep -i "unsigned" $1| grep -v ']'| sed 's~    ~//~g'| cut -d " " -f 3| tail -n+2)
 echo -e "unsinged \n  $unsig" >> $2
 for x in $rest
 do 
-    echo "$x" >> $2
+    echo "$x(0)" >> $2
 done 
+short=$(grep -i 'short' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g' )
+echo "  $short(0)" >> $2
 f='/*----------------------------------------------------------------------*/
 /*------------------------------ FUNCTIONS -----------------------------*/
 /*----------------------------------------------------------------------*/'
