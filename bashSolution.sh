@@ -3,7 +3,7 @@
 # ************************************************************UNCLASSIFIED************************************************************
 #  Company: Northrop Grumman 
 #  Date   : July 16, 2021
-#  By: Tim Kan M61636 for SWDC OPIR
+#  By     : Tim Kan M61636 for SWDC OPIR
 #  Purpose: Cleaning up hpp files. Making it look neat without having to go and chang line by line
 #  Instruction: ./test.sh <Inputfile> <outputfile> 
 #               the user will need to specify input file and what they want it to output to.
@@ -68,8 +68,8 @@ yy=$(grep -i "bool" $1 | grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~
 echo "  $yy(false)" >> $2
 gg=$(grep -i "char" $1 | head -1 |grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~ ~\n~g' | sed 's~;~~g')
 echo "  $gg('\0')" >> $2
-unsig=$(grep -i "unsigned" $1| head -1| gawk '{print $2}')
-rest=$(grep -i "unsigned" $1| gawk '{print $3}')
+unsig=$(grep -i "unsigned" $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~,~g')
+rest=$(grep -i "unsigned" $1| grep -v ']'| sed 's~    ~//~g'| cut -d " " -f 3| tail -n+2)
 echo -e "unsinged \n  $unsig" >> $2
 for x in $rest
 do 
