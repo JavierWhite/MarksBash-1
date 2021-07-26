@@ -65,18 +65,19 @@ echo "$x::$x ($xx " >> $2
 y=$(grep -i "::" $1| head -1| gawk '{print $5}' | sed 's~::~ ~g' | gawk '{print $5}')
 echo "  $y()," >> $2
 yy=$(grep -i "bool" $1 | grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~ ~\n~g' | sed 's~;~~g')
-echo "  $yy(false)" >> $2
+echo "  $yy(false)," >> $2
 gg=$(grep -i "char" $1 | head -1 |grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~ ~\n~g' | sed 's~;~~g')
-echo "  $gg('\0')" >> $2
+echo "  $gg('\0')," >> $2
 unsig=$(grep -i "unsigned" $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g')
-rest=$(grep -i "unsigned" $1| grep -v ']'| sed 's~    ~//~g'| cut -d " " -f 3| tail -n+2)
-echo -e "unsinged \n  $unsig" >> $2
+rest=$(grep -i "unsigned" $1| grep -v ']'| sed 's~    ~//~g'| cut -d " " -f 3| sed 's~;~~g' |tail -n+2)
+echo -e "unsinged \n  $unsig," >> $2
 for x in $rest
 do 
-    echo "$x(0)" >> $2
+    echo "$x(0)," >> $2
 done 
-short=$(grep -i 'short' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g' )
+short=$(grep -i 'short' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
 echo "  $short(0)" >> $2
+
 f='/*----------------------------------------------------------------------*/
 /*------------------------------ FUNCTIONS -----------------------------*/
 /*----------------------------------------------------------------------*/'
@@ -104,15 +105,15 @@ x2=$(grep -i "double" $1| grep -i "const" |grep -i "(" | sed -e 's/^[ \t]*//' | 
 #echo "$x1 $x::$x2" >> $2
 #done
 
-#for name in $x1     ### Outer for loop ###
-#do
+for name in $x1     ### Outer for loop ###
+do
 
     #for stuff in $x2 ### Inner for loop ###
     #do
- #   echo "$name $x::$x2" >> $2
+    echo "$name $x::$x2" >> $2
     #done
 
-#done
+done
 
 
 
