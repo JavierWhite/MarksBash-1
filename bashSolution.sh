@@ -179,7 +179,7 @@ echo -e "$c \n" >> $2
 s1=$(grep -i "::" $1| awk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 1-4)
 
 a1=($(echo $s1|fold -w1 ))
-for (( i=${#a1[@]}-1;i>=0;i--));do echo "namespace ${a1[i]} {" >> $2 ; done
+for (( i=${#a1[@]}-1;i>=0;i--));do echo "} //namespace ${a1[i]} " >> $2 ; done
 
 
 
