@@ -38,7 +38,7 @@ l='/*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/'
 
 echo -e "$l \n" >> $2
-x=$(grep -i "::" $1| gawk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 1-4 )
+x=$(grep -i "::" $1| awk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 1-4 )
 
 for file in $x
 do 
@@ -58,11 +58,11 @@ c='/*----------------------------------------------------------------------*/
 
 echo -e "$c \n" >> $2 
 white='  '
-x=$(grep -i "::" $1| gawk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 5)
+x=$(grep -i "::" $1| awk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 5)
 x=$(echo "$1" |cut -d ' ' -f 1| cut -d "." -f 1)
 xx=$(grep -i "ImaginaryClass" $1| grep -i "*"| cut -d "(" -f 2  |sed 's/;/ :/g')
 echo "$x::$x ($xx " >> $2
-y=$(grep -i "::" $1| head -1| gawk '{print $5}' | sed 's~::~ ~g' | gawk '{print $5}')
+y=$(grep -i "::" $1| head -1| awk '{print $5}' | sed 's~::~ ~g' | awk '{print $5}')
 echo "  $y()," >> $2
 yy=$(grep -i "bool" $1 | grep -v "(" | grep -v "]" | sed 's~    ~//~g' | sed 's~ ~\n~g' | sed 's~;~~g')
 echo "  $yy(false)," >> $2
@@ -70,13 +70,34 @@ gg=$(grep -i "char" $1 | head -1 |grep -v "(" | grep -v "]" | sed 's~    ~//~g' 
 echo "  $gg('\0')," >> $2
 unsig=$(grep -i "unsigned" $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g')
 rest=$(grep -i "unsigned" $1| grep -v ']'| sed 's~    ~//~g'| cut -d " " -f 3| sed 's~;~~g' |tail -n+2)
-echo -e "unsinged \n  $unsig," >> $2
-for x in $rest
+echo -e "  $unsig(0)," >> $2
+for file in $rest
 do 
-    echo "$x(0)," >> $2
+    echo "$file(0)," >> $2
 done 
 short=$(grep -i 'short' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
 echo "  $short(0)" >> $2
+float=$(grep -i 'float' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $float(0.0)" >> $2
+echo "  //long" >> $2
+rest2=$(grep -i 'long' $1| sed 's~    ~//~g'| cut -d " " -f 2| sed 's~;~~g' |tail -n+2)
+for n in $rest2
+do
+    echo "$n(0)," >> $2
+done
+
+arr=$(grep -i ']' $1| grep -i 'bool'| sed 's~    ~//~g'|sed 's~ ~\n~g'|tr -d '[0-9]'| sed 's~;~~g')
+echo "  $arr({false}),">> $2
+
+char=$(grep -i ']' $1| grep -i 'char'| sed 's~    ~//~g'|sed 's~ ~\n~g'|tr -d '[0-9]'| sed 's~;~~g')
+echo "  $char({'\0'}),">> $2
+
+short=$(grep -i ']' $1| grep -i 'short'| sed 's~    ~//~g'|sed 's~ ~\n~g'|tr -d '[0-9]'| sed 's~;~~g')
+echo "  $short({0}),">> $2
+
+unArr=$(grep -i ']' $1| grep -i 'unsigned'| sed 's~    ~//~g'|sed 's~ ~\n~g' |tr -d '[0-9]'| sed 's~;~~g') 
+echo "  $unArr({0}),">> $2
+
 
 f='/*----------------------------------------------------------------------*/
 /*------------------------------ FUNCTIONS -----------------------------*/
@@ -134,6 +155,11 @@ c='/*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/'
 
 echo -e "$c \n" >> $2
+
+s1=$(grep -i "::" $1| awk '{print $2}'|head -1| sed 's/::/ /g'| cut -d " " -f 1-4)
+
+a1=($(echo $s1|fold -w1 ))
+for (( i=${#a1[@]}-1;i>=0;i--));do echo "namespace ${a1[i]} {" >> $2 ; done
 
 
 
