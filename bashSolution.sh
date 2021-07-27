@@ -76,15 +76,35 @@ do
     echo "$file(0)," >> $2
 done 
 short=$(grep -i 'short' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
-echo "  $short(0)" >> $2
-float=$(grep -i 'float' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
-echo "  $float(0.0)" >> $2
+echo "  $short(0)," >> $2
+
+int=$(grep -i 'int' $1| grep -v ')\|*\|//'| grep -i 'volatile'|  sed 's~    ~//~g'|cut -d ' ' -f 2-3| sed -e 's~^~//~g'  | sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $int(0)," >> $2
+
 echo "  //long" >> $2
 rest2=$(grep -i 'long' $1| sed 's~    ~//~g'| cut -d " " -f 2| sed 's~;~~g' |tail -n+2)
 for n in $rest2
 do
     echo "$n(0)," >> $2
 done
+
+float=$(grep -i 'float' $1| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $float(0.0)," >> $2
+
+dub=$(grep -i 'double' $1| grep -v '(\|*'| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $dub(0.0)," >> $2
+
+string=$(grep -i '::string' $1| grep -v "("| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $string('')," >> $2
+
+ref=$(grep -i "reference" $1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g')
+echo "  $ref(0)," >> $2
+
+pter=$(grep -i 'pointer' $1| grep -v "("| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $pter(NULL)," >> $2
+
+obj=$(grep -i 'object' $1| grep -v "("| head -1| sed 's~    ~//~g'| sed 's~ ~\n~g'| sed 's~;~~g' )
+echo "  $obj()," >> $2
 
 arr=$(grep -i ']' $1| grep -i 'bool'| sed 's~    ~//~g'|sed 's~ ~\n~g'|tr -d '[0-9]'| sed 's~;~~g')
 echo "  $arr({false}),">> $2
