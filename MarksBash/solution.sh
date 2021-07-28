@@ -5,7 +5,7 @@
 #  Date   : July 16, 2021
 #  By     : Tim Kan M61636 for SWDC OPIR
 #  Purpose: Cleaning up hpp files. Making it look neat without having to go and chang line by line
-#  Instruction: ./test.sh <Inputfile> <Outputfile> 
+#  Instruction: ./<scriptName>.sh <Inputfile> <Outputfile> 
 #               the user will need to specify input file and their desire output file.
 #               desired output can be a .txt or .cpp etc...
 #  Check4Runtime: time <scriptName>.sh <Inputfile> <Outputfile2> use this command in linux as of rn it's total runtime is 1m48.887s
