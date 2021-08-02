@@ -65,7 +65,7 @@ class A::B::C::D::ImaginaryClass : protected A::B::C::D::DefinitelyRealSuper
     ImaginaryClass(OTHERCLASS* pointer);
     ~ImaginaryClass();
 
-    bool changeObjectName (const std::string identifier);
+    bool changeObjectName (const std::string& identifier);
     double changeObjectValue(const double& newValue, int valueWeWontUse);
     const std::string& getObjectName() const;
     const double& getObjectValue () const;
